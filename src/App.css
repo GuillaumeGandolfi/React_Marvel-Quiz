@@ -159,6 +159,18 @@ main {
   text-align: center;
   text-decoration: none;
   margin-top: 150px;
+  /* Ajout d'une animation pour que les boutons arrivent de manière plus fluide */
+  opacity: 0; /* Définir l'opacité initiale à 0 */
+  animation: fadeIn 0.5s ease-in-out forwards; /* Animation de fondu */
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .btn-welcome:hover {
