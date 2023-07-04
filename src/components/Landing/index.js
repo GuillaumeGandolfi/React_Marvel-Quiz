@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export const Landing = () => {
 
@@ -61,10 +62,11 @@ export const Landing = () => {
             {/* 2 boutons : un bouton d'inscription et un bouton de connexion
                 A l'aide de flexbox on va placer les boutons à gauche et à droite de wolverine */}
             <div className="leftBox">
-                <button onMouseOver={setLeftImg} onMouseOut={clearImg} className="btn-welcome">Inscription</button>
+                {/* Link à la place de button pour rediriger le click, il faut rajouter 'to' */}
+                <Link onMouseOver={setLeftImg} to="/signup" onMouseOut={clearImg} className="btn-welcome">Inscription</Link>
             </div>
             <div className="rightBox">
-                <button onMouseOver={setRightImg} onMouseOut={clearImg} className="btn-welcome">Connexion</button>
+                <Link onMouseOver={setRightImg} to="/login" onMouseOut={clearImg} className="btn-welcome">Connexion</Link>
             </div>
         </>
     )
