@@ -34,6 +34,25 @@ export const Landing = () => {
         pour déclencher l'exécution de l'effet. Ici je laisse un tableau vide pour que l'effet s'exécute une seule fois après le premier rendu */
     }, []);
 
+    // Fonction qui s'enclenchera quand on survolera le bouton gauche
+    const setLeftImg = () => {
+        refWolverine.current.classList.add("leftImg");
+    }
+
+    // Pareil pour le bouton droit
+    const setRightImg = () => {
+        refWolverine.current.classList.add("rightImg");
+    }
+
+    // Et il faut une fonction qui permettent de supprimer cette classe lorsque l'on ne survole plus le bouton
+    const clearImg = () => {
+        if (refWolverine.current.classList.contains("leftImg")) {
+            refWolverine.current.classList.remove("leftImg");
+        } else if (refWolverine.current.classList.contains("rightImg")) {
+            refWolverine.current.classList.remove("rightImg");
+        }
+    }
+
     /* Avec cette condition, au départ, on aura pas les boutons, puis après 3 secondes, les griffes 
     de Wolverine vont disparaitre (changement d'image), on fait passer btn en true, et ils vont appraitre ! 
     Cela grâce au hook useState, qui permet de gérer des States dans des composants fonction */
@@ -42,10 +61,10 @@ export const Landing = () => {
             {/* 2 boutons : un bouton d'inscription et un bouton de connexion
                 A l'aide de flexbox on va placer les boutons à gauche et à droite de wolverine */}
             <div className="leftBox">
-                <button className="btn-welcome">Inscription</button>
+                <button onMouseOver={setLeftImg} onMouseOut={clearImg} className="btn-welcome">Inscription</button>
             </div>
             <div className="rightBox">
-                <button className="btn-welcome">Connexion</button>
+                <button onMouseOver={setRightImg} onMouseOut={clearImg} className="btn-welcome">Connexion</button>
             </div>
         </>
     )
