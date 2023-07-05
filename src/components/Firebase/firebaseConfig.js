@@ -16,24 +16,4 @@ const firebaseConfig = {
 
 // Initialisation de Firebase
 export const app = initializeApp(firebaseConfig);
-
 export const auth = getAuth(app);
-
-// Inscription
-const signupUser = (email, password) => {
-    auth.createUserWithEmailAndPassword(email, password);
-}
-
-// Connexion
-const loginUser = (email, password) => {
-    auth.signInWithEmailAndPassword(email, password);
-}
-
-// Deconnexion
-const signoutUser = () => {
-    auth.signOut();
-}
-
-
-
-
