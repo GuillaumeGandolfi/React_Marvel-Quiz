@@ -1,3 +1,5 @@
+import { Logout } from "../Logout"
+import { Quiz } from "../Quiz"
 
 
 export const Welcome = () => {
@@ -5,7 +7,8 @@ export const Welcome = () => {
     return(
         <div className="quiz-bg">
             <div className="container">
-                Welcome
+                <Logout/>
+                <Quiz/>
             </div>
         </div>
     )
