@@ -2,6 +2,7 @@
 // j'utilise firebase qui fournit des fonctionnalités back-end)
 
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 
 // Le code ci-dessus a été obtenu sur firebase, dans le projet que j'ai crée
 const firebaseConfig = {
@@ -14,7 +15,24 @@ const firebaseConfig = {
 };
 
 // Initialisation de Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
+
+export const auth = getAuth(app);
+
+// Inscription
+const signupUser = (email, password) => {
+    auth.createUserWithEmailAndPassword(email, password);
+}
+
+// Connexion
+const loginUser = (email, password) => {
+    auth.signInWithEmailAndPassword(email, password);
+}
+
+// Deconnexion
+const signoutUser = () => {
+    auth.signOut();
+}
 
 
 
