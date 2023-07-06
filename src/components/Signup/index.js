@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../Firebase/firebaseConfig";
+import { auth, database } from "../Firebase/firebaseConfig";
 import { Link, useNavigate } from 'react-router-dom';
+
+import { setDoc, doc } from "firebase/firestore";
 
 
 export const Signup = () => {
@@ -38,9 +40,15 @@ export const Signup = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        const { email, password } = loginData;
+        const { email, password, pseudo } = loginData;
         createUserWithEmailAndPassword(auth, email, password)
-        .then(user => {
+        .then((authUser) => {
+            return setDoc(doc(database, `users/${authUser.user.uid}`), {
+                pseudo,
+                email
+            });
+        })
+        .then(() => {
             setLoginData({...data});
             // redirection
             navigate('/welcome');

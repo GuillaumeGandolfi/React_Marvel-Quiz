@@ -3,6 +3,8 @@
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+// Pour la base de données créée sur firebase
+import { getFirestore, doc } from 'firebase/firestore';
 
 // Le code ci-dessus a été obtenu sur firebase, dans le projet que j'ai crée
 const firebaseConfig = {
@@ -15,5 +17,11 @@ const firebaseConfig = {
 };
 
 // Initialisation de Firebase
-export const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+
+export const database = getFirestore(app);
+
+export const user = (uid) => {
+    doc(database, `users/${uid}`);
+}
