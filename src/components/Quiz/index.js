@@ -83,14 +83,12 @@ export class Quiz extends Component {
         const goodAnswer = this.storedDataRef.current[this.state.idQuestion].answer;
         if (this.state.userAnswer === goodAnswer) {
             this.setState((prevState) => ({
-                score: prevState + 1
+                score: prevState.score + 1
             }))
         }
-
     }
 
     render() {
-
         // destructuring
         // const { pseudo } = this.props.userData;
 
