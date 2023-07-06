@@ -23,5 +23,5 @@ export const auth = getAuth(app);
 export const database = getFirestore(app);
 
 export const user = (uid) => {
-    doc(database, `users/${uid}`);
+    return doc(database, `users/${uid}`);
 }

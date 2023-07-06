@@ -2,8 +2,9 @@ import { Logout } from "../Logout";
 import { Quiz } from "../Quiz";
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../Firebase/firebaseConfig";
+import { auth, user } from "../Firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
+import { getDoc } from "firebase/firestore";
 
 
 export const Welcome = (props) => {
@@ -11,13 +12,30 @@ export const Welcome = (props) => {
     const navigate = useNavigate();
 
     const [userSession, setUserSession] = useState(null);
+    const [userData, setUserData] = useState({});
 
     useEffect(() => {
         const listener = onAuthStateChanged(auth, (user) => {
-            user ? setUserSession(user) : navigate('/')
-        })
+            user ? setUserSession(user) : navigate('/');
+        });
+
+        if (!!userSession) {
+
+            const colRef = user(userSession.uid);
+            getDoc(colRef)
+                .then((snapshot) => {
+                    if (snapshot.exists()) {
+                        const docData = snapshot.data();
+                        setUserData(docData);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        }
         return listener();
-    });
+        
+    }, [navigate, userSession]);
 
     // On va vérifier la valeur de useSession
     // Si c'est nul (c'est le cas ici pour l'instant) on va afficher un loader
@@ -34,7 +52,7 @@ export const Welcome = (props) => {
         <div className="quiz-bg">
             <div className="container">
                 <Logout />
-                <Quiz />
+                <Quiz userData={userData} />
             </div>
         </div>
     )
