@@ -22,7 +22,7 @@ export class Quiz extends Component {
         userAnswer: null,
         score: 0,
         showWelcomeMsg: false,
-        quizEnd : false
+        quizEnd : false,
     }
 
     // Petit entrainement pour changer : utilisation de createRef et de la propriété current
@@ -100,7 +100,26 @@ export class Quiz extends Component {
         })
     }
 
+    getPercent = (maxQuestions, score) => {
+        return (score / maxQuestions) * 100;
+    }
+
     gameOver = () => {
+        const gradePercent = this.getPercent(this.state.maxQuestions, this.state.score);
+
+        if (gradePercent >= 50) {
+            this.setState({
+                quizLevel: this.state.quizLevel + 1,
+                percent: gradePercent,
+                quizEnd: true
+            })
+        } else {
+            this.setState({
+                percent: gradePercent,
+                quizEnd: true
+            })
+        }
+
         this.setState({
             quizEnd: true
         })
@@ -162,6 +181,11 @@ export class Quiz extends Component {
         return this.state.quizEnd ? (
             <QuizOver 
                 ref={this.storedDataRef}
+                levelNames={this.state.levelNames}
+                score={this.state.score}
+                maxQuestions={this.state.maxQuestions}
+                quizLevel={this.state.quizLevel}
+                percent={this.state.percent}
             />
         ) :
         (
