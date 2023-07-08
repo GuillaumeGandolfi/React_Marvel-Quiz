@@ -1,10 +1,11 @@
 // Comme on a fait que des composants de type fonction, on va faire une classe ici pour changer
 import { Component } from 'react';
 import { Levels } from '../Levels';
-import { ProgressBar } from '../ProgressBar';
+import  ProgressBar  from '../ProgressBar';
 import { QuizMarvel } from '../quizMarvel';
 import { createRef } from 'react';
 import { toast } from 'react-toastify';
+import { QuizOver } from '../QuizOver';
 
 
 export class Quiz extends Component {
@@ -20,7 +21,8 @@ export class Quiz extends Component {
         btnDisabled: true,
         userAnswer: null,
         score: 0,
-        showWelcomeMsg: false
+        showWelcomeMsg: false,
+        quizEnd : false
     }
 
     // Petit entrainement pour changer : utilisation de createRef et de la propriété current
@@ -97,10 +99,16 @@ export class Quiz extends Component {
             btnDisabled: false
         })
     }
+
+    gameOver = () => {
+        this.setState({
+            quizEnd: true
+        })
+    }
     
     nextQuestion = () => {
         if (this.state.idQuestion === this.state.maxQuestions - 1) {
-            // end
+            this.gameOver();
         } else {
             this.setState(prevState => ({
                 idQuestion: prevState.idQuestion + 1
@@ -151,12 +159,15 @@ export class Quiz extends Component {
             )
         })
 
-        return(
-            <div>
+        return this.state.quizEnd ? (
+            <QuizOver />
+        ) :
+        (
+            <>
                 {/* <h2>Pseudo: {pseudo}</h2> */}
 
                 <Levels/>
-                <ProgressBar/>
+                <ProgressBar idQuestion={this.state.idQuestion} maxQuestions={this.state.maxQuestions}/>
 
                 <h2>{this.state.question}</h2>
 
@@ -166,8 +177,11 @@ export class Quiz extends Component {
                     disabled={this.state.btnDisabled} 
                     className="btnSubmit"
                     onClick={this.nextQuestion}
-                >Suivant</button>
-            </div>
+                >
+                {/* Conditions pour transformer le bouton suivant en terminer */}
+                {this.state.idQuestion < this.state.maxQuestions - 1 ? "Suivant" : "Terminer"}
+                </button>
+            </>
         )
     }
 
