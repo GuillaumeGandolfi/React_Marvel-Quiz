@@ -5,7 +5,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, user } from "../Firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { getDoc } from "firebase/firestore";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Welcome = (props) => {
 
@@ -52,6 +53,7 @@ export const Welcome = (props) => {
         <div className="quiz-bg">
             <div className="container">
                 <Logout />
+                <ToastContainer />
                 <Quiz userData={userData} />
             </div>
         </div>
