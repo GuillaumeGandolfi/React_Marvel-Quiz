@@ -39,7 +39,6 @@ export class Quiz extends Component {
     // On va aller chercher les questions 'débutantes' (level en param)
     loadQuestions = (quizz) => {
         const fetchedArrayQuiz = QuizMarvel[0].quizz[quizz];
-        console.log(fetchedArrayQuiz);
         if (fetchedArrayQuiz.length >= this.state.maxQuestions) {
 
             this.storedDataRef.current = fetchedArrayQuiz;
@@ -108,9 +107,7 @@ export class Quiz extends Component {
         })
     }
 
-    getPercent = (maxQuestions, score) => {
-        return (score / maxQuestions) * 100;
-    }
+    getPercent = (maxQuestions, score) => (score / maxQuestions) * 100;
 
     gameOver = () => {
         const gradePercent = this.getPercent(this.state.maxQuestions, this.state.score);
@@ -118,24 +115,29 @@ export class Quiz extends Component {
         if (gradePercent >= 50) {
             this.setState({
                 quizLevel: this.state.quizLevel + 1,
-                percent: gradePercent,
-                quizEnd: true
-            })
+                percent: gradePercent
+            });
         } else {
             this.setState({
-                percent: gradePercent,
-                quizEnd: true
-            })
+                percent: gradePercent 
+            });
         }
 
         this.setState({
             quizEnd: true
-        })
+        });
     }
     
     nextQuestion = () => {
         if (this.state.idQuestion === this.state.maxQuestions - 1) {
-            this.gameOver();
+            this.setState(
+                {
+                    quizEnd: true
+                },
+                () => {
+                    this.gameOver();
+                }
+            );
         } else {
             this.setState(prevState => ({
                 idQuestion: prevState.idQuestion + 1
