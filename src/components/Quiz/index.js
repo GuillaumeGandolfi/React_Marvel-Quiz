@@ -6,6 +6,7 @@ import { QuizMarvel } from '../quizMarvel';
 import { createRef } from 'react';
 import { toast } from 'react-toastify';
 import { QuizOver } from '../QuizOver';
+import { FaChevronRight } from 'react-icons/fa';
 
 
 export class Quiz extends Component {
@@ -192,7 +193,8 @@ export class Quiz extends Component {
                 className={`answerOptions ${this.state.userAnswer === option ? "selected" : null}`}
                 onClick={() => this.submitAnswer(option)}
 
-                >{option} </p>
+                >
+                <FaChevronRight /> {option} </p>
             )
         })
 
@@ -211,7 +213,8 @@ export class Quiz extends Component {
             <>
                 {/* <h2>Pseudo: {pseudo}</h2> */}
 
-                <Levels/>
+                <Levels levelNames={this.state.levelNames}
+                    quizLevel={this.state.quizLevel}/>
                 <ProgressBar idQuestion={this.state.idQuestion} maxQuestions={this.state.maxQuestions}/>
 
                 <h2>{this.state.question}</h2>

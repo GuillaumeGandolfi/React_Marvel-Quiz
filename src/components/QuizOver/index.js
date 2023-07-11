@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useState } from "react"
+import { GiTrophyCup } from 'react-icons/gi';
 
 export const QuizOver = forwardRef((props, ref) => {
 
@@ -41,7 +42,8 @@ export const QuizOver = forwardRef((props, ref) => {
                         :
                         (
                             <>
-                                <p className="successMsg">Bravo, vous êtes un expert !</p>
+                                <p className="successMsg">
+                                    <GiTrophyCup size='50px'/> Bravo, vous êtes un expert !</p>
                                 <button className="btnResult gameOver"
                                 onClick={() => loadLevelQuestions(0)}>Accueil</button>
                             </>
