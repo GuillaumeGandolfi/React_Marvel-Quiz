@@ -1,5 +1,6 @@
 import { forwardRef, useEffect, useState } from "react"
 import { GiTrophyCup } from 'react-icons/gi';
+import { Loader } from "../Loader";
 
 export const QuizOver = forwardRef((props, ref) => {
 
@@ -87,8 +88,8 @@ export const QuizOver = forwardRef((props, ref) => {
         (
             <tr>
                 <td colSpan="3">
-                    <div className="loader"></div>
-                    <p style={{textAlign: 'center', color: 'red'}}>Pas de réponse</p>
+                    <Loader loadingMsg={"Pas de réponse"}
+                    styling={{textAlign: 'center', color: 'red'}}/>
                 </td>
             </tr>
         )

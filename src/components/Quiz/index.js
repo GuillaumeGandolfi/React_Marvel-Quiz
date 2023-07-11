@@ -9,30 +9,28 @@ import { QuizOver } from '../QuizOver';
 import { FaChevronRight } from 'react-icons/fa';
 
 
+const initialState = {
+    quizLevel: 0,
+    maxQuestions: 10,
+    storedQuestions: [],
+    question: null,
+    options: [],
+    idQuestion: 0,
+    btnDisabled: true,
+    userAnswer: null,
+    score: 0,
+    showWelcomeMsg: false,
+    quizEnd : false,
+}
+
+const levelNames = ["debutant", "confirme", "expert"];
+
 export class Quiz extends Component {
 
     constructor(props) {
         super(props)
-
-        this.initialState = {
-            levelNames: ["debutant", "confirme", "expert"],
-            quizLevel: 0,
-            maxQuestions: 10,
-            storedQuestions: [],
-            question: null,
-            options: [],
-            idQuestion: 0,
-            btnDisabled: true,
-            userAnswer: null,
-            score: 0,
-            showWelcomeMsg: false,
-            quizEnd : false,
-        }
-
-        this.state = this.initialState;
+        this.state = initialState;
     }
-
-
 
     // Petit entrainement pour changer : utilisation de createRef et de la propriété current
     storedDataRef = createRef();
@@ -76,7 +74,7 @@ export class Quiz extends Component {
     }
 
     componentDidMount() {
-        this.loadQuestions(this.state.levelNames[this.state.quizLevel])
+        this.loadQuestions(levelNames[this.state.quizLevel])
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -180,7 +178,7 @@ export class Quiz extends Component {
             ...this.initialState, quizLevel: param
         })
 
-        this.loadQuestions(this.state.levelNames[param]);
+        this.loadQuestions(levelNames[param]);
     }
 
     render() {
@@ -201,7 +199,7 @@ export class Quiz extends Component {
         return this.state.quizEnd ? (
             <QuizOver 
                 ref={this.storedDataRef}
-                levelNames={this.state.levelNames}
+                levelNames={levelNames}
                 score={this.state.score}
                 maxQuestions={this.state.maxQuestions}
                 quizLevel={this.state.quizLevel}
@@ -213,7 +211,7 @@ export class Quiz extends Component {
             <>
                 {/* <h2>Pseudo: {pseudo}</h2> */}
 
-                <Levels levelNames={this.state.levelNames}
+                <Levels levelNames={levelNames}
                     quizLevel={this.state.quizLevel}/>
                 <ProgressBar idQuestion={this.state.idQuestion} maxQuestions={this.state.maxQuestions}/>
 
