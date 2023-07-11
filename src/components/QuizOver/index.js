@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useState } from "react"
 import { GiTrophyCup } from 'react-icons/gi';
 import { Loader } from "../Loader";
+import { Modal } from "../Modal";
 
 export const QuizOver = forwardRef((props, ref) => {
 
@@ -15,9 +16,19 @@ export const QuizOver = forwardRef((props, ref) => {
 
     const [asked, setAsked] = useState([]);
 
+    const [openModal, setOpenModal] = useState(false);
+
     useEffect(() => {
         setAsked(ref.current)
     }, [ref])
+
+    const showModal = () => {
+        setOpenModal(true);
+    }
+
+    const closeModal = () => {
+        setOpenModal(false);
+    }
 
     const averageGrade = maxQuestions / 2;
 
@@ -78,7 +89,8 @@ export const QuizOver = forwardRef((props, ref) => {
                     <td>{question.question}</td>
                     <td>{question.answer}</td>
                     <td>
-                        <button className="btnInfo">Infos</button>
+                        <button className="btnInfo"
+                        onClick={() => showModal(question.heroId)}>Infos</button>
                     </td>
                 </tr>
             )
@@ -116,6 +128,17 @@ export const QuizOver = forwardRef((props, ref) => {
                     </tbody>
                 </table>
             </div>
+
+            <Modal showModal={openModal}>
+                <div className="modalHeader">
+                </div>
+                <div className="modalBody">
+                </div>
+                <div className="modalFooter">
+                    <button className="modalBtn"
+                    onClick={closeModal}>Fermer</button>
+                </div>
+            </Modal>
         </>
     )
 })
