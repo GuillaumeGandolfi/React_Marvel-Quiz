@@ -165,7 +165,38 @@ export const QuizOver = forwardRef((props, ref) => {
                     <h2>{characterData.data.results[0].name}</h2>
                 </div>
                 <div className="modalBody">
-                    <h3>Titre 2</h3>
+                    <div className="comicImage">
+                        <img 
+                        src={characterData.data.results[0].thumbnail.path
+                        +'.'+
+                        characterData.data.results[0].thumbnail.extension} 
+                        alt={characterData.data.results[0].name}/>
+
+                        <p>{characterData.attributionText}</p>
+                    </div>
+                    <div className="comicDetails">
+                        <h3>Description</h3>
+                        {
+                            characterData.data.results[0].description ?
+                            <p>{characterData.data.results[0].description}</p>
+                            : <p>Description indisponible</p>
+
+                        }
+                        <h3>Plus d'infos</h3>
+                        {
+                            characterData.data.results[0].urls &&
+                            characterData.data.results[0].urls.map((url, index) => {
+                                return <a 
+                                key={index} 
+                                href={url.url}
+                                target="blanck"
+                                rel="noopener noreferrer"
+                                >
+                                    {url.type}
+                                </a>
+                            })
+                        }
+                    </div>
                 </div>
                 <div className="modalFooter">
                     <button className="modalBtn"
