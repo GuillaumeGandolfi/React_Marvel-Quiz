@@ -2,6 +2,7 @@ import { forwardRef, useEffect, useState } from "react"
 import { GiTrophyCup } from 'react-icons/gi';
 import { Loader } from "../Loader";
 import { Modal } from "../Modal";
+import axios from 'axios';
 
 export const QuizOver = forwardRef((props, ref) => {
 
@@ -15,24 +16,69 @@ export const QuizOver = forwardRef((props, ref) => {
     } = props;
 
     const API_PUBLIC_KEY = process.env.REACT_APP_MARVEL_API_KEY;
-    console.log(API_PUBLIC_KEY);
-    
+
     const hash = 'fc7302042914cb0234f88d0050a025ee';
 
     const [asked, setAsked] = useState([]);
-
     const [openModal, setOpenModal] = useState(false);
+    const [characterData, setCharacterData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         setAsked(ref.current)
+
+        if (localStorage.getItem('marvelStorageDate')) {
+            const date = localStorage.getItem('marvelStorageDate');
+            checkDataAge(date);
+        }
     }, [ref])
 
-    const showModal = () => {
+    const checkDataAge = (date) => {
+
+        const today = Date.now();
+        const timeDifference = today - date;
+
+        const daysDifference = timeDifference / (1000 * 3600 * 24);
+
+        if ( daysDifference >= 15 ) {
+            localStorage.clear();
+            localStorage.setItem('marvelStorageDate', Date.now());
+        }
+    }
+
+    const showModal = (id) => {
         setOpenModal(true);
+
+        if (localStorage.getItem(id)) {
+            setCharacterData(JSON.parse(localStorage.getItem(id)));
+            setLoading(false);
+        } else {
+
+            axios
+                .get(`https://gateway.marvel.com/v1/public/characters/${id}?ts=1&apikey=${API_PUBLIC_KEY}&hash=${hash}`)
+                .then(response => {
+                    setCharacterData(response.data);
+                    // Si on a bien récupérer les données, on met le loading en false,
+                    // pour que l'on puisse afficher les data dans le JSX (voir plus bas)
+                    setLoading(false);
+
+                    localStorage.setItem(id, JSON.stringify(response.data));
+
+                    if (!localStorage.getItem('marvelStorageDate')) {
+                        localStorage.setItem("marvelStorageDate", Date.now());
+                    }
+
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        }
     }
 
     const closeModal = () => {
         setOpenModal(false);
+        // Et quand on ferme le modal, on remet loading à son état initial, c'est à dire true
+        setLoading(true);
     }
 
     const averageGrade = maxQuestions / 2;
@@ -41,7 +87,7 @@ export const QuizOver = forwardRef((props, ref) => {
         // L'utilisateur devra recommencer tout le quiz
         // setTimeout(() => {loadLevelQuestions(0)}, 3000)
         // Ou seulement le niveau qu'il vient de rater
-        setTimeout(() => {loadLevelQuestions(quizLevel)}, 3000)
+        setTimeout(() => { loadLevelQuestions(quizLevel) }, 3000)
     }
 
     const decision = score >= averageGrade ? (
@@ -53,16 +99,16 @@ export const QuizOver = forwardRef((props, ref) => {
                             <>
                                 <p className="successMsg">Bravo, passez au niveau suivant !</p>
                                 <button className="btnResult success"
-                                onClick={() => loadLevelQuestions(quizLevel)}>Niveau Suivant</button>
+                                    onClick={() => loadLevelQuestions(quizLevel)}>Niveau Suivant</button>
                             </>
                         )
                         :
                         (
                             <>
                                 <p className="successMsg">
-                                    <GiTrophyCup size='50px'/> Bravo, vous êtes un expert !</p>
+                                    <GiTrophyCup size='50px' /> Bravo, vous êtes un expert !</p>
                                 <button className="btnResult gameOver"
-                                onClick={() => loadLevelQuestions(0)}>Accueil</button>
+                                    onClick={() => loadLevelQuestions(0)}>Accueil</button>
                             </>
                         )
                 }
@@ -95,7 +141,7 @@ export const QuizOver = forwardRef((props, ref) => {
                     <td>{question.answer}</td>
                     <td>
                         <button className="btnInfo"
-                        onClick={() => showModal(question.heroId)}>Infos</button>
+                            onClick={() => showModal(question.heroId)}>Infos</button>
                     </td>
                 </tr>
             )
@@ -106,9 +152,37 @@ export const QuizOver = forwardRef((props, ref) => {
             <tr>
                 <td colSpan="3">
                     <Loader loadingMsg={"Pas de réponse"}
-                    styling={{textAlign: 'center', color: 'red'}}/>
+                        styling={{ textAlign: 'center', color: 'red' }} />
                 </td>
             </tr>
+        )
+
+    // Si le loading est false, on peut récupérer les data
+    const resultInModal = !loading ?
+        (
+            <>
+                <div className="modalHeader">
+                    <h2>{characterData.data.results[0].name}</h2>
+                </div>
+                <div className="modalBody">
+                    <h3>Titre 2</h3>
+                </div>
+                <div className="modalFooter">
+                    <button className="modalBtn"
+                        onClick={closeModal}>Fermer</button>
+                </div>
+            </>
+        )
+        :
+        (
+            <>
+                <div className="modalHeader">
+                    <h2>Réponse de Marvel ...</h2>
+                </div>
+                <div className="modalBody">
+                    <Loader />
+                </div>
+            </>
         )
 
     return (
@@ -135,14 +209,8 @@ export const QuizOver = forwardRef((props, ref) => {
             </div>
 
             <Modal showModal={openModal}>
-                <div className="modalHeader">
-                </div>
-                <div className="modalBody">
-                </div>
-                <div className="modalFooter">
-                    <button className="modalBtn"
-                    onClick={closeModal}>Fermer</button>
-                </div>
+
+                {resultInModal}
             </Modal>
         </>
     )
