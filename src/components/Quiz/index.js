@@ -111,6 +111,10 @@ export class Quiz extends Component {
     gameOver = () => {
         const gradePercent = this.getPercent(this.state.maxQuestions, this.state.score);
 
+        this.setState({
+            quizEnd: true
+        });
+
         if (gradePercent >= 50) {
             this.setState({
                 quizLevel: this.state.quizLevel + 1,
@@ -121,10 +125,6 @@ export class Quiz extends Component {
                 percent: gradePercent 
             });
         }
-
-        this.setState({
-            quizEnd: true
-        });
     }
     
     nextQuestion = () => {
@@ -175,7 +175,7 @@ export class Quiz extends Component {
 
     loadLevelQuestions = (param) => {
         this.setState({
-            ...this.initialState, quizLevel: param
+            ...initialState, quizLevel: param
         })
 
         this.loadQuestions(levelNames[param]);
