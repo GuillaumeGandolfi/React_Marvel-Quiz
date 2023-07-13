@@ -5,7 +5,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, user } from "../Firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { getDoc } from "firebase/firestore";
-
+import { ToastContainer } from 'react-toastify';
+import { Loader } from "../Loader";
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Welcome = (props) => {
 
@@ -44,14 +46,15 @@ export const Welcome = (props) => {
     return userSession === null ? (
         // En JSX les éléments doivent être dans un élément parent,
         // Pour ne pas surcharger de div, on utiliser un fragment
-        <>
-            <div className="loader"></div>
-            <p className="loaderText">Loading ...</p>
-        </>
+
+        <Loader loadingMsg={"Authentification ..."}
+        styling={{textAlign: 'center', color: '#FFFFFF'}}
+        />
     ) : (
         <div className="quiz-bg">
             <div className="container">
                 <Logout />
+                <ToastContainer />
                 <Quiz userData={userData} />
             </div>
         </div>

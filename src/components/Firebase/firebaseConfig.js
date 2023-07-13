@@ -8,12 +8,12 @@ import { getFirestore, doc } from 'firebase/firestore';
 
 // Le code ci-dessus a été obtenu sur firebase, dans le projet que j'ai crée
 const firebaseConfig = {
-    apiKey: "AIzaSyAgmNEIWI0R6FsOmvVo_vU1zbLteb_CbFQ",
-    authDomain: "marvel-quiz-f74e0.firebaseapp.com",
-    projectId: "marvel-quiz-f74e0",
-    storageBucket: "marvel-quiz-f74e0.appspot.com",
-    messagingSenderId: "72147106250",
-    appId: "1:72147106250:web:9a2b979823303cffd9f733"
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 
 // Initialisation de Firebase

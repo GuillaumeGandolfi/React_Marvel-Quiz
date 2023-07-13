@@ -8,10 +8,13 @@ import { Signup } from '../Signup';
 import { Welcome } from '../Welcome';
 import { ErrorPage } from '../ErrorPage';
 import { ForgetPassword } from '../ForgetPassword';
+import { IconContext } from 'react-icons/lib';
 
 function App() {
   return (
     <Router>
+      <IconContext.Provider value={{ style: { verticalAlign: 'middle' } }}>
+      {/* Icon */}
       <Header />
       <Routes>
         <Route exact path="/" element={<Landing />} />
@@ -23,6 +26,7 @@ function App() {
       </Routes>
 
       <Footer />
+      </IconContext.Provider>
     </Router>
   );
 }
